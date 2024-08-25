@@ -21,9 +21,6 @@ io.on("connection", socket => {
     if (!userId) return;
     users[userId] = socket.id;
 
-    socket.on("updateId", x => {
-    });
-
     socket.on("createLobby", lobby => {
         const newLobby = {
             ...lobby,
@@ -42,7 +39,7 @@ io.on("connection", socket => {
     socket.on("joinLobby", lobbyDetails => {
         const lobby = lobbies.find((x) => x.lobbyCode === lobbyDetails.lobbyCode);
         if (lobby) {
-            lobby.players.push({name: lobbyDetails.playerName, id: socket.id});
+            lobby.players.push({name: lobbyDetails.playerName});
             io.to(users[lobby.lobbyCode.concat("-Leader")]).emit("updateLobby", lobby);
             io.to(users[userId]).emit("redirect-lobby", lobbyDetails.lobbyCode);
 
