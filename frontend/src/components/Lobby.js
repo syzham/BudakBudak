@@ -12,9 +12,11 @@ export function Lobby() {
     const [lobbyCode, setLobbyCode] = React.useState('');
     const [socket, setSocket] = React.useState(null);
     const [lobby, setLobby] = React.useState({players:[]});
+    const [currentPlayer, setCurrentPlayer] = React.useState('');
 
     useEffect(() => {
         const userId = localStorage.getItem("currentPlayer")??"";
+        setCurrentPlayer(userId);
 
         if (socket) {
             socket.on("updateLobby", newLobby => {
@@ -59,6 +61,7 @@ export function Lobby() {
                 <ListGroup>
                     {lobby.players.map((player, index) => (
                         <ListGroup.Item key={index}>
+                            {currentPlayer === lobbyCode.concat("-", player.name) && '* '}
                             {player.name}
                         </ListGroup.Item>
                     ))}
